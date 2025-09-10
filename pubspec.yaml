@@ -1,0 +1,86 @@
+name: real_estate
+description: "A new Flutter project."
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+#------------- Packages ---------------------------# 
+dependencies:
+  flutter:
+    sdk: flutter
+
+# Utility packages
+  http: ^1.4.0
+  intl: ^0.20.2
+  logger: ^2.6.0
+  url_launcher: ^6.3.1
+  carousel_slider: ^5.1.1
+  smooth_page_indicator: ^1.2.1
+
+# icons
+
+  iconsax: ^0.0.8
+  cupertino_icons: ^1.0.8
+
+# State Management
+  get: ^4.7.2
+  get_storage: ^2.1.1
+
+#Product Specific
+  readmore: ^3.0.0
+  flutter_rating_bar: ^4.0.1
+
+#------------- Packages:End ---------------------------# 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+#-------- Local Assets ----------------#   
+   
+  assets:
+    - assets/logos/
+    - assets/icons/categories/
+    - assets/icons/social_icons/
+    - assets/images/onboarding/
+    - assets/images/animations/
+    - assets/images/banners/
+    - assets/images/products/
+    - assets/images/forget_password/
+    - assets/images/profile/
+
+#------- Local Fonts --------------#
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 800
+        - asset: assets/fonts/Poppins-BoldItalic.ttf
+          weight: 800
+          style: italic
+
+
+
+
+
+
