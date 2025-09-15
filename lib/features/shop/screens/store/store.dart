@@ -5,9 +5,14 @@ import 'package:real_estate/common/widgets/products/cart/card_menu_icon.dart';
 import 'package:real_estate/common/widgets/products/product_card/brand_card.dart';
 import 'package:real_estate/common/widgets/tabbar.dart';
 import 'package:real_estate/common/widgets/text/section_header.dart';
+import 'package:real_estate/data/dummy_data.dart';
+import 'package:real_estate/features/shop/models/brand_model.dart';
+import 'package:real_estate/features/shop/models/product_model.dart';
 import 'package:real_estate/features/shop/screens/cart/cart.dart';
+import 'package:real_estate/features/shop/screens/store/allproduct.dart';
 import 'package:real_estate/features/shop/screens/store/category_tab.dart';
 import 'package:real_estate/utils/constants/colors.dart';
+import 'package:real_estate/utils/constants/image_strings.dart';
 import 'package:real_estate/utils/constants/sizes.dart';
 import 'package:real_estate/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -64,11 +69,23 @@ class StoreScreen extends StatelessWidget {
                       TGridLayout(
                         itemCount: 4,
                         mainAxisExtent: 80,
-                        itemBuilder: (_, index) {
+                        itemBuilder: (contex, index) {
+                          final brands = dummyBrands[index];
+                          List<Product> filteredProducts = dummyProducts
+                              .where(
+                                (product) => product.brand?.id == brands.id,
+                              )
+                              .toList();
                           return TbrandCard(
-                            text: 'Nike',
-                            subText: '250 products',
-                            onTap: () {},
+                            text: brands.name,
+                            image: brands.image ?? TImages.default404,
+                            subText: '${filteredProducts.length} products',
+                            onTap: () => Get.to(
+                              () => AllProductsScreen(
+                                title: brands.name,
+                                products: filteredProducts,
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -77,25 +94,20 @@ class StoreScreen extends StatelessWidget {
                 ),
 
                 bottom: TTabBar(
-                  tabs: [
-                    Tab(child: Text('sports')),
-                    Tab(child: Text('Furnitures')),
-                    Tab(child: Text('Electronics')),
-                    Tab(child: Text('Clothes')),
-                    Tab(child: Text('Cosmetics')),
-                  ],
+                  tabs: dummyCategories.map((element) {
+                    return Tab(child: Text(element.name));
+                  }).toList(),
                 ),
               ),
             ];
           },
           body: TabBarView(
-            children: [
-              TCategoryTab(),
-              TCategoryTab(),
-              TCategoryTab(),
-              TCategoryTab(),
-              TCategoryTab(),
-            ],
+            children: dummyCategories.map((element) {
+              return TCategoryTab(
+                categoryId: element.id,
+                categoryName: element.name,
+              );
+            }).toList(),
           ),
         ),
       ),

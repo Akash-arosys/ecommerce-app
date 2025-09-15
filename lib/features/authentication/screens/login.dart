@@ -1,9 +1,9 @@
 import 'package:real_estate/common/styles/spacing_styles.dart';
 import 'package:real_estate/common/widgets/form_divider.dart';
 import 'package:real_estate/common/widgets/social_icon.dart';
+import 'package:real_estate/features/authentication/controllers/authentication_controller.dart';
 import 'package:real_estate/features/authentication/screens/forget_password.dart';
 import 'package:real_estate/features/authentication/screens/signup.dart';
-import 'package:real_estate/navigation_menu.dart';
 import 'package:real_estate/utils/constants/image_strings.dart';
 import 'package:real_estate/utils/constants/sizes.dart';
 import 'package:real_estate/utils/constants/text_string.dart';
@@ -11,6 +11,7 @@ import 'package:real_estate/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:real_estate/utils/validators/validator.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -18,6 +19,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
+    final controller = Get.put(AuthenticationController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -47,6 +49,7 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Form(
+                key: controller.loginFormKey,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: TSizes.spaceBtwSections,
@@ -54,17 +57,33 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: controller.email,
+                        validator: (value) => TValidator.validateEmail(value),
                         decoration: InputDecoration(
                           prefixIcon: Icon(Iconsax.direct_right),
                           labelText: TTexts.email,
                         ),
                       ),
                       const SizedBox(height: TSizes.spaceBtwInputFields),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Iconsax.password_check),
-                          labelText: TTexts.password,
-                          suffixIcon: Icon(Iconsax.eye_slash),
+                      Obx(
+                        () => TextFormField(
+                          controller: controller.password,
+                          validator: (value) =>
+                              TValidator.validatePassword(value),
+                          obscureText: controller.hidePassword.value,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Iconsax.password_check),
+                            labelText: TTexts.password,
+                            suffixIcon: IconButton(
+                              onPressed: () => controller.hidePassword.value =
+                                  !controller.hidePassword.value,
+                              icon: Icon(
+                                controller.hidePassword.value
+                                    ? Iconsax.eye_slash
+                                    : Iconsax.eye,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: TSizes.spaceBtwInputFields / 2),
@@ -73,7 +92,14 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Checkbox(value: true, onChanged: (value) {}),
+                              Obx(
+                                () => Checkbox(
+                                  value: controller.rememberMe.value,
+                                  onChanged: (value) =>
+                                      controller.rememberMe.value =
+                                          !controller.rememberMe.value,
+                                ),
+                              ),
                               const Text(TTexts.rememberMe),
                             ],
                           ),
@@ -88,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => Get.offAll(() => NavigationMenu()),
+                          onPressed: controller.emailAndPasswordLogin,
                           child: const Text(TTexts.signIn),
                         ),
                       ),

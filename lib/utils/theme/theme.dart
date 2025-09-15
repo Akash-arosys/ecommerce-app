@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:real_estate/utils/constants/colors.dart';
 import 'package:real_estate/utils/theme/custom_themes/appbar_theme.dart';
 import 'package:real_estate/utils/theme/custom_themes/bottom_sheet_theme.dart';
 import 'package:real_estate/utils/theme/custom_themes/checkbox_theme.dart';
@@ -6,7 +8,6 @@ import 'package:real_estate/utils/theme/custom_themes/elevated_button_theme.dart
 import 'package:real_estate/utils/theme/custom_themes/outlined_button_theme.dart';
 import 'package:real_estate/utils/theme/custom_themes/text_form_field_theme.dart';
 import 'package:real_estate/utils/theme/custom_themes/text_theme.dart';
-import 'package:flutter/material.dart';
 
 class TAppTheme {
   TAppTheme._();
@@ -16,7 +17,7 @@ class TAppTheme {
     fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: Colors.blue,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: TColors.light,
     textTheme: TTextTheme.lightTextTheme,
     chipTheme: TChipTheme.lightChipTheme,
     appBarTheme: TAppBarTheme.lightAppBarTheme,

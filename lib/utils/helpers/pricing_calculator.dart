@@ -25,4 +25,11 @@ class TPricingCalculator {
   static double getShippingCost(String location) {
     return 5.00;
   }
+
+  static String calculateDiscountPercent(double price, double offerPrice) {
+    if (price <= 0) return '0'; // Avoid division by zero or negative price
+    double discount = price - offerPrice;
+    double discountPercent = (discount / price) * 100;
+    return '${discountPercent.ceil().toString()}%';
+  }
 }

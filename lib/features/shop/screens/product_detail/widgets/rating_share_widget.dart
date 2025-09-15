@@ -3,12 +3,13 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../../../utils/constants/sizes.dart';
 
-
 class TRatingAndShare extends StatelessWidget {
   const TRatingAndShare({
     super.key,
+    required this.rating,
+    required this.reviewCount,
   });
-
+  final String rating, reviewCount;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -22,8 +23,11 @@ class TRatingAndShare extends StatelessWidget {
             Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(text: '5.0 ', style: Theme.of(context).textTheme.bodyLarge),
-                  const TextSpan(text: '(199)'),
+                  TextSpan(
+                    text: rating,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  TextSpan(text: ' ($reviewCount)'),
                 ],
               ),
             ),
@@ -31,7 +35,10 @@ class TRatingAndShare extends StatelessWidget {
         ),
 
         ///Share Button
-        IconButton(onPressed: () {}, icon: const Icon(Icons.share, size: TSizes.iconMd))
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.share, size: TSizes.iconMd),
+        ),
       ],
     );
   }

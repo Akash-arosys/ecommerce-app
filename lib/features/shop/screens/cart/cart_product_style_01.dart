@@ -24,7 +24,7 @@ class TCartItem extends StatelessWidget {
         TRoundedImage(
           width: 60,
           height: 60,
-          imageUrl: TImages.productImage1,
+          imageUrl: TImages.bookProd11,
           padding: const EdgeInsets.all(TSizes.sm),
           backgroundColor: dark ? TColors.darkerGrey : TColors.white,
         ),

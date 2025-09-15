@@ -2,12 +2,14 @@ import 'package:real_estate/common/widgets/rounded_choice_chips.dart';
 import 'package:real_estate/common/widgets/text/section_header.dart';
 import 'package:real_estate/common/widgets/text/t_product_price_text.dart';
 import 'package:real_estate/common/widgets/text/t_product_title_text.dart';
+import 'package:real_estate/features/shop/models/product_model.dart';
+import 'package:real_estate/utils/constants/colors.dart';
 import 'package:real_estate/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
 class TProductAttributes extends StatelessWidget {
-  const TProductAttributes({super.key});
-
+  const TProductAttributes({super.key, required this.product});
+  final Product product;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,31 +36,26 @@ class TProductAttributes extends StatelessWidget {
                       children: [
                         // Actual Price if sale price not null.
                         const TProductTitleText(
-                          title: 'Price : ',
+                          title: 'Price :',
                           smallSize: true,
                         ),
-                        // if (controller.selectedVariation.value.salePrice != null)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(width: TSizes.spaceBtwItems),
-                            Text(
-                              "200",
-                              style: Theme.of(context).textTheme.titleSmall!
-                                  .apply(
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                            ),
-                            const SizedBox(width: TSizes.spaceBtwItems),
-                          ],
-                        ),
-                        // Sale Price if sale price not null Else Simple Price.
+
+                        const SizedBox(width: TSizes.spaceBtwItems / 2),
                         TProductPriceText(
                           // price: controller.selectedVariation.value.salePrice != null
                           //     ? controller.selectedVariation.value.salePrice.toString()
                           //     : controller.selectedVariation.value.price.toString(),
-                          price: "200",
+                          price: product.offerPrice.toString(),
                         ),
+
+                        const SizedBox(width: TSizes.spaceBtwItems / 2),
+
+                        if (product.price != null)
+                          Text(
+                            product.price.toString(),
+                            style: Theme.of(context).textTheme.bodyMedium!
+                                .apply(decoration: TextDecoration.lineThrough),
+                          ),
                       ],
                     ),
 
@@ -69,10 +66,16 @@ class TProductAttributes extends StatelessWidget {
                           title: 'Stock : ',
                           smallSize: true,
                         ),
-                        Text(
-                          "In Stock",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
+                        product.stock > 0
+                            ? Text(
+                                'In Stock',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              )
+                            : Text(
+                                'Out Of Stock',
+                                style: Theme.of(context).textTheme.bodyMedium!
+                                    .apply(color: TColors.error),
+                              ),
                       ],
                     ),
                   ],
@@ -92,37 +95,34 @@ class TProductAttributes extends StatelessWidget {
         const SizedBox(height: TSizes.spaceBtwItems),
 
         /// -- Attributes
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TSectionHeading(title: 'Colors'),
-            const SizedBox(height: TSizes.spaceBtwItems / 2),
-            Wrap(
-              spacing: 8,
-              children: [
-                TChoiceChip(text: 'Green', selected: true),
-                TChoiceChip(text: 'Red', selected: false),
-                TChoiceChip(text: 'Blue', selected: false),
-              ],
-            ),
-          ],
-        ),
-
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TSectionHeading(title: 'Size'),
-            const SizedBox(height: TSizes.spaceBtwItems / 2),
-            Wrap(
-              spacing: 8,
-              children: [
-                TChoiceChip(text: 'EU 34', selected: true),
-                TChoiceChip(text: 'EU 36', selected: false),
-                TChoiceChip(text: 'EU 38', selected: false),
-              ],
-            ),
-          ],
-        ),
+        if (product.color != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TSectionHeading(title: 'Colors', showActionButton: false),
+              const SizedBox(height: TSizes.spaceBtwItems / 2),
+              Wrap(
+                spacing: 8,
+                children: (product.color ?? []).map((e) {
+                  return TChoiceChip(text: e, selected: false);
+                }).toList(),
+              ),
+            ],
+          ),
+        if (product.size != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TSectionHeading(title: 'Size', showActionButton: false),
+              const SizedBox(height: TSizes.spaceBtwItems / 2),
+              Wrap(
+                spacing: 8,
+                children: (product.size ?? []).map((e) {
+                  return TChoiceChip(text: e, selected: false);
+                }).toList(),
+              ),
+            ],
+          ),
       ],
     );
   }

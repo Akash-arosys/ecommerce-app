@@ -1,6 +1,18 @@
 import 'package:intl/intl.dart';
 
 class TFormatter {
+  static String formatDateAndTime(
+    DateTime? date, {
+    bool use24HourFormat = false,
+  }) {
+    date ??= DateTime.now();
+    final onlyDate = DateFormat('dd/MM/yyyy').format(date);
+    // Use 'hh:mm a' for 12-hour with AM/PM, or 'HH:mm' for 24-hour format.
+    final timeFormat = use24HourFormat ? 'HH:mm' : 'hh:mm a';
+    final onlyTime = DateFormat(timeFormat).format(date);
+    return '$onlyDate at $onlyTime';
+  }
+
   static String formatDate(DateTime? date) {
     date ??= DateTime.now();
     return DateFormat('dd-MMM-yyyy').format(date);
@@ -44,5 +56,19 @@ class TFormatter {
     }
 
     return phoneNumber;
+  }
+
+  static String generateDisplayName(String fullName) {
+    if (fullName.length <= 12) return fullName;
+
+    final parts = fullName.trim().split(RegExp(r"\s+"));
+    if (parts.length > 1) {
+      final first = parts.first[0]; // First char of first word
+      final last = parts.last; // Full last word
+      return "$first $last";
+    }
+
+    // fallback → if no space, just return first 15 chars
+    return fullName.substring(0, 12);
   }
 }

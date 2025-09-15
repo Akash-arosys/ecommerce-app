@@ -1,4 +1,5 @@
-import 'package:real_estate/features/authentication/screens/onboarding.dart';
+import 'package:real_estate/bindings/general_binding.dart';
+import 'package:real_estate/utils/constants/colors.dart';
 import 'package:real_estate/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -9,11 +10,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: GeneralBindings(),
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
-      home: const OnBoardingScreen(),
+      home: const Scaffold(
+        backgroundColor: TColors.primary,
+        body: Center(child: CircularProgressIndicator(color: TColors.white)),
+      ),
     );
   }
 }

@@ -40,7 +40,7 @@ class TCircularImage extends StatelessWidget {
       ),
       child: Center(
         child: Image(
-          fit: fit,
+          fit: BoxFit.cover,
           image: isNetworkImage
               ? NetworkImage(image)
               : AssetImage(image) as ImageProvider,

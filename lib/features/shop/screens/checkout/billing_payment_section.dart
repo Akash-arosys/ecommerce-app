@@ -31,7 +31,7 @@ class TBillingPaymentSection extends StatelessWidget {
                   : TColors.white,
               padding: const EdgeInsets.all(TSizes.sm),
               child: Image(
-                image: AssetImage(TImages.cosmeticsIcon),
+                image: AssetImage(TImages.paypalLogo),
                 fit: BoxFit.contain,
               ),
             ),

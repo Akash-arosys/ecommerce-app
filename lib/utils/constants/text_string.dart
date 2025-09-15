@@ -150,4 +150,5 @@ class TTexts {
 
   // -- Dashboard 1
   static const String popularProducts = "Popular Products";
+  static const String bestSellerProducts = "Best Seller Products";
 }

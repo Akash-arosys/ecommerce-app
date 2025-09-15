@@ -1,4 +1,5 @@
 import 'package:real_estate/common/widgets/appbar.dart';
+import 'package:real_estate/features/shop/models/review_model.dart';
 import 'package:real_estate/features/shop/screens/product_detail/widgets/rating_progress_indicator.dart';
 import 'package:real_estate/features/shop/screens/product_detail/widgets/user_review_card.dart';
 import 'package:real_estate/utils/constants/colors.dart';
@@ -8,8 +9,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ProductReviewScreen extends StatelessWidget {
-  const ProductReviewScreen({super.key});
-
+  const ProductReviewScreen({
+    super.key,
+    required this.reviews,
+    required this.rating,
+  });
+  final List<Review> reviews;
+  final double rating;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +36,7 @@ class ProductReviewScreen extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Text(
-                      '4.8',
+                      rating.toString(),
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
@@ -50,19 +56,19 @@ class ProductReviewScreen extends StatelessWidget {
               ),
 
               RatingBarIndicator(
-                rating: 3.5,
+                rating: rating,
                 itemSize: 20,
                 unratedColor: TColors.darkGrey,
                 itemBuilder: (_, __) =>
                     Icon(Iconsax.star1, color: TColors.primary),
               ),
-              Text('12611', style: Theme.of(context).textTheme.bodySmall),
+              Text(
+                reviews.length.toString(),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               const SizedBox(height: TSizes.spaceBtwSections),
-
+              ...reviews.map((element) => UserReviewCard(reviewdata: element)),
               // User Reviews List
-              const UserReviewCard(),
-              const UserReviewCard(),
-              const UserReviewCard(),
             ],
           ),
         ),

@@ -1,19 +1,26 @@
+import 'package:get/get.dart';
 import 'package:real_estate/common/widgets/appbar.dart';
 import 'package:real_estate/common/widgets/custom_shapes/curved_edges/curved_edge_widget.dart';
 import 'package:real_estate/common/widgets/icons/t_circular_icon.dart';
 import 'package:real_estate/common/widgets/image_text_widget/rounded_image.dart';
+import 'package:real_estate/features/shop/controllers/product_controller.dart';
 import 'package:real_estate/utils/constants/colors.dart';
-import 'package:real_estate/utils/constants/image_strings.dart';
 import 'package:real_estate/utils/constants/sizes.dart';
 import 'package:real_estate/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class TProductImageSlider extends StatelessWidget {
-  const TProductImageSlider({super.key});
-
+  const TProductImageSlider({
+    super.key,
+    required this.images,
+    required this.productId,
+  });
+  final int productId;
+  final List<String> images;
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductController());
     final isDark = THelperFunctions.isDarkMode(context);
     return TCurvedEdgeWidget(
       child: Container(
@@ -21,16 +28,20 @@ class TProductImageSlider extends StatelessWidget {
         child: Stack(
           children: [
             /// Main Large Image
-            SizedBox(
-              height: 400,
-              child: Padding(
-                padding: const EdgeInsets.all(TSizes.defaultSpace * 2),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Image(
-                      image: AssetImage(TImages.productImage1),
-                      fit: BoxFit.contain,
+            Obx(
+              () => SizedBox(
+                height: 400,
+                child: Padding(
+                  padding: const EdgeInsets.all(TSizes.defaultSpace * 2),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Image(
+                        image: AssetImage(
+                          images[controller.imageCurrentIndex.value],
+                        ),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -46,7 +57,7 @@ class TProductImageSlider extends StatelessWidget {
                 height: 80,
                 child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: 4,
+                  itemCount: images.length,
                   scrollDirection: Axis.horizontal,
                   physics: const AlwaysScrollableScrollPhysics(),
                   separatorBuilder: (_, __) =>
@@ -55,10 +66,10 @@ class TProductImageSlider extends StatelessWidget {
                     return TRoundedImage(
                       width: 80,
                       fit: BoxFit.contain,
-                      imageUrl: TImages.productImage1,
+                      imageUrl: images[index],
                       padding: const EdgeInsets.all(TSizes.sm),
                       backgroundColor: isDark ? TColors.dark : TColors.white,
-                      onPressed: () {},
+                      onPressed: () => controller.updateImageIndicator(index),
                       border: Border.all(color: Colors.transparent),
                     );
                   },
@@ -69,7 +80,17 @@ class TProductImageSlider extends StatelessWidget {
             /// Appbar Icons
             TAppBar(
               showBackArrow: true,
-              actions: [TCircularIcon(icon: Iconsax.heart5, color: Colors.red)],
+              actions: [
+                Obx(() {
+                  bool isInWishlist = controller.isInWishlist(productId);
+                  return TCircularIcon(
+                    icon: isInWishlist ? Iconsax.heart5 : Iconsax.heart,
+                    color: TColors.error,
+                    onPressed: () =>
+                        controller.addToWishlist(context, productId),
+                  );
+                }),
+              ],
             ),
           ],
         ),
